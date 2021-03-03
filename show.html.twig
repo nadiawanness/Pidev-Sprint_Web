@@ -1,0 +1,46 @@
+{% extends 'dashbord.html.twig' %}
+
+{% block title %}Recruteur{% endblock %}
+
+{% block body %}
+    <h1>Recruteur</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ recruteur.id }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ recruteur.nom }}</td>
+            </tr>
+            <tr>
+                <th>Prenom</th>
+                <td>{{ recruteur.prenom }}</td>
+            </tr>
+            <tr>
+                <th>Nom de la societé</th>
+                <td>{{ recruteur.nomso }}</td>
+            </tr>
+            <tr>
+                <th>E-Mail</th>
+                <td>{{ recruteur.mail }}</td>
+            </tr>
+            <tr>
+                <th>Numéro de la société</th>
+                <td>{{ recruteur.numso }}</td>
+            </tr>
+            <tr>
+                <th>Mot de passe</th>
+                <td>{{ recruteur.mdps }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a class="btn btn-secondary" href="{{ path('recruteur_index') }}">back to list</a>
+
+    <a class="btn btn-secondary" href="{{ path('recruteur_edit', {'id': recruteur.id}) }}">edit</a>
+
+    {{ include('recruteur/_delete_form.html.twig') }}
+{% endblock %}
