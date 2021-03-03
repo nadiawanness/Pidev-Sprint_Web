@@ -1,0 +1,158 @@
+{% extends 'base.html.twig' %}
+{%  block content %}
+    <div class="sectionnr nopadding db">
+        <div id="map"></div>
+        <div class="container">
+            <form class="submit-form customform">
+                <div class="row">
+                    <div class="col-md-3 col-sm-6 col-xs-12">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="basic-addon2"><i class="fa fa-search"></i></span>
+                            <input type="text" class="form-control" placeholder="Search Keywords" aria-describedby="basic-addon2">
+                        </div>
+                    </div><!-- end col -->
+
+                    <div class="col-md-3 col-sm-6 col-xs-12">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="basic-addon1"><i class="fa fa-map-o"></i></span>
+                            <input type="text" class="form-control" placeholder="All Locations" aria-describedby="basic-addon1">
+                        </div>
+                    </div><!-- end col -->
+
+                    <div class="col-md-3 col-sm-6 col-xs-12">
+                        <select class="selectpicker" data-style="btn-default" data-live-search="true">
+                            <option>Web Designer</option>
+                            <option>Web Developer</option>
+                            <option>WordPress Expert</option>
+                            <option>Hosting Provider</option>
+                            <option>English Teacher</option>
+                            <option>Digital & Creative</option>
+                            <option>Public Sector</option>
+                            <option>All Categories</option>
+                        </select>
+                    </div><!-- end col -->
+
+                    <div class="col-md-3 col-sm-6 col-xs-12">
+                        <button class="btn btn-primary btn-block">Search Freelancer</button>
+                    </div><!-- end col -->
+                </div><!-- end row -->
+            </form>
+        </div><!-- end container -->
+    </div><!-- end section -->
+
+    <div class="section lb">
+        <div class="container">
+            <div class="section-title text-center clearfix">
+                <h4>Looking for Expert Freelancers?</h4>
+                <p class="lead">Lorem ipsum dolor sit amet, non odio tincidunt ut ante, lorem a euismod suspendisse vel, sed quam nulla mauris iaculis. Erat eget vitae malesuada, tortor tincidunt porta lorem lectus.</p>
+            </div>
+            {% for freelancers in freelancers %}
+            <div class="all-jobs job-listing freelancer-list clearfix">
+                <div class="job-tab">
+                    <div class="row">
+                        <div class="col-md-2 col-sm-2 col-xs-12">
+                            <div class="post-media">
+                                <a href="freelancer-profile.html"><img src="{{ asset('upload/'~freelancers.photo) }}" alt="" class="img-responsive img-thumbnail"></a>
+                            </div><!-- end media -->
+                        </div><!-- end col -->
+
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <div class="badge part-badge">Web Designer</div>
+                            <h3><a href="freelancer-profile.html" title="">{{ freelancers.name }}</a></h3>
+                            <small>
+                                <span>Skills : {{ freelancers.skills }}</span>
+                            </small>
+                        </div><!-- end col -->
+
+                        <div class="col-md-2 col-sm-2 col-xs-12">
+                            <div class="job-meta">
+                                <i class="fa fa-map-marker"></i>
+
+                                <small>{{ freelancers.country }}</small>
+                            </div><!-- end meta -->
+                        </div><!-- end col -->
+
+                        <div class="col-md-2 col-sm-2 col-xs-12">
+                            <div class="job-meta text-center">
+                                <h4>${{ freelancers.prix }}/hr</h4>
+                                <a href="freelancer-profile.html" class="btn btn-primary btn-sm btn-block">View Profile</a>
+                            </div>
+                        </div><!-- end col -->
+                    </div><!-- end row -->
+                </div><!-- end job-tab -->
+            </div><!-- end alljobs -->
+            {%  endfor %}
+
+            <div class="loadmorebutton text-center clearfix">
+                <a href="#" class="btn btn-primary" id="loadMore">Load More Freelancers</a>
+            </div><!-- end loadmore -->
+        </div><!-- end container -->
+    </div><!-- end section -->
+
+    <div class="section wb">
+        <div class="container">
+            <div class="section-title text-center clearfix">
+                <h4>Featured Freelancers</h4>
+                <p class="lead">Lorem ipsum dolor sit amet, non odio tincidunt ut ante, lorem a euismod suspendisse vel, sed quam nulla mauris iaculis. Erat eget vitae malesuada, tortor tincidunt porta lorem lectus.</p>
+            </div>
+
+            <div class="row freelancer-list">
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <div class="freelancer-wrap row-fluid clearfix">
+                        <div class="col-md-3 text-center">
+                            <div class="post-media">
+                                <img class="img-responsive" src="upload/testi_09.png" alt="">
+                            </div>
+                        </div><!-- end col -->
+
+                        <div class="col-md-9">
+                            <div class="rating">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                            </div>
+                            <h4><a href="#">Jenny Lisbon</a></h4>
+                            <ul class="list-inline">
+                                <li><small>Graphic Designer</small></li>
+                                <li><small>21 Jobs Done</small></li>
+                            </ul>
+                            <p>Lorem ipsum dolor sit amet, non odio tincidunt ut ante, lorem a euismod suspendisse vel, sed quam nulla mauris iaculis.</p>
+                        </div><!-- end col -->
+                        <a href="#" class="btn btn-primary"><span class="oi" data-glyph="link-intact"></span></a>
+                    </div><!-- end freelancer-wrap -->
+                </div><!-- end col -->
+
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <div class="freelancer-wrap row-fluid clearfix">
+                        <div class="col-md-3 text-center">
+                            <div class="post-media">
+                                <img class="img-responsive" src="upload/testi_08.png" alt="">
+                            </div>
+                        </div><!-- end col -->
+
+                        <div class="col-md-9">
+                            <div class="rating">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                            </div>
+                            <h4><a href="#">Amanda Martin</a></h4>
+                            <ul class="list-inline">
+                                <li><small>Blogger (Article Writer)</small></li>
+                                <li><small>33 Jobs Done</small></li>
+                            </ul>
+                            <p>Lorem ipsum dolor sit amet, non odio tincidunt ut ante, lorem a euismod suspendisse vel, sed quam nulla mauris iaculis.</p>
+                        </div><!-- end col -->
+                        <a href="#" class="btn btn-primary"><span class="oi" data-glyph="link-intact"></span></a>
+                    </div><!-- end freelancer-wrap -->
+                </div><!-- end col -->
+            </div><!-- end row -->
+        </div><!-- end container -->
+    </div><!-- end section -->
+
+
+{%  endblock %}
