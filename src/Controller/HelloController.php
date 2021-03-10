@@ -17,27 +17,28 @@ use Symfony\Component\Routing\Annotation\Route;
 class HelloController extends AbstractController
 {
     /**
-     * @Route("/", name="hello")
+     * @Route("/front", name="hello")
      */
     public function index(): Response
     {
-        return $this->render('hello/index.html.twig', [
+        return $this->render('front/hello/index.html.twig', [
             'controller_name' => 'HelloController',
         ]);
     }
-    /**
-     * @param ForumRepository $repository
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
-     * @Route("/AfficheForum",name="AfficheForum")
-     */
-    public function showForum(ForumRepository $repository, Request $request)
-    {
+   // /**
+     //* @param ForumRepository $repository
+     //* @param Request $request
+     //* @return \Symfony\Component\HttpFoundation\Response
+     //* @Route("/AfficheForum",name="AfficheForum")
+     //*/
+    //public function showForum(ForumRepository $repository, Request $request)
+    //{
 
-        $forum = $repository->findAll();
-        return $this->render('forum/index.html.twig', ['forum' => $forum]);
 
-    }
+      //  $forum = $repository->findBy([],['date' => 'ASC']);
+        //return $this->render('front/forum/index.html.twig', ['forum' => $forum]);
+
+    //}
 
     /**
      *
@@ -60,10 +61,13 @@ class HelloController extends AbstractController
 
         }
 
-        return $this->render('forum/show.html.twig', [
+
+        return $this->render('front/forum/show.html.twig', [
             'forum' => $forum,
             'form' => $form->createView()
         ]);
+
+
     }
 
 
@@ -85,7 +89,7 @@ class HelloController extends AbstractController
             return $this->redirectToRoute('AfficheForum');
 
         }
-        return $this->render('forum/addForum.html.twig', array(
+        return $this->render('front/forum/addForum.html.twig', array(
             'form' => $form->createView()
         ));
 
@@ -128,7 +132,7 @@ class HelloController extends AbstractController
             return $this->redirectToRoute('AfficheForum');
 
         }
-        return $this->render('forum/updateForum.html.twig', ['form' => $form->createView()]);
+        return $this->render('front/forum/updateForum.html.twig', ['form' => $form->createView()]);
 
 
     }
@@ -174,10 +178,153 @@ class HelloController extends AbstractController
     return $this->redirectToRoute('forum_show',array('id'=>$id));
 
     }
-        return $this->render('commenter/updateComm.html.twig', ['form' => $form->createView()]);
+        return $this->render('front/commenter/updateComm.html.twig', ['form' => $form->createView()]);
 
 
     }
+
+
+    /**
+     * @param ForumRepository $repository
+     * @return Response
+     * @Route ("forum/tri")
+     */
+
+    function OrderBysujetsQL (ForumRepository $repository) {
+        $forum=$repository->OrderBysujetQB ();
+        return $this->render('front/forum/index.html.twig', ['forum'=>$forum]);
+    }
+
+
+    /**
+     * @param ForumRepository $repository
+     * @param Request $request
+     * @return Response
+     * @Route ("forum/searchs", name="rechercheForum")
+     */
+
+    function SearchS (ForumRepository $repository,Request $request) {
+        $sujet=$request->get('search');
+        $forum=$repository->searchS($sujet);
+        return $this->render('front/forum/index.html.twig', [
+            'pagination' => false,
+            'forum'=>$forum
+            ]);
+
+
+
+       /* $limit=1;
+        $page=(int)$request->query->get("page",1);
+        $forums=$repository->paginatedAnnonces($page,$limit, $sujet);
+        $total=$repository->getTotalAnnonces();
+
+
+        return $this->render('front/forum/index.html.twig',[
+            'pagination' => false,
+            'forum'=> $forums,
+
+        ]);*/
+
+
+
+
+
+
+
+
+    }
+
+   // /**
+     //* @param ForumRepository $annRepo
+     //* @return Response
+     //* @Route ("/stats", name="stats")
+     //*/
+
+       // public function statistiques(ForumRepository $annRepo){
+         //   $forum = $annRepo->countByDate();
+           // $dates = [];
+            //$annoncesCount = [];
+            //foreach($forum as $foru){
+
+              //  $dates [] = $foru['date'];
+                //$annoncesCount[] = $foru['count'];
+            //}
+            //return $this->render('front/forum/stats.html.twig', [
+              //  'dates' => $dates,
+                //'annoncesCount' => $annoncesCount
+            //]);
+    /**
+     * @param CommenterRepository $annoncesRepo
+     * @param ForumRepository $catRepo
+     * @param Request $request
+     * @return Response
+     * @Route ("/page", name="pagina")
+     */
+
+    public function pagination(CommenterRepository $annoncesRepo, ForumRepository $catRepo, Request $request){
+        // On définit le nombre d'éléments par page
+        $limit = 2;
+
+        // On récupère le numéro de page
+        $page = (int)$request->query->get("page", 1);
+
+        // On récupère les filtres
+        $filters = $request->get("forum");
+
+        // On récupère les annonces de la page en fonction du filtre
+        $annonces = $annoncesRepo->paginatedAnnonces($page, $limit, $filters);
+
+        // On récupère le nombre total d'annonces
+        $total = $annoncesRepo->getTotalAnnonces($filters);
+
+        // On vérifie si on a une requête Ajax ya khra hedhy ghalta
+       // if($request->get('ajax')){
+         //   return new JsonResponse([
+           //     'content' => $this->renderView('annonces/_content.html.twig', compact('annonces', 'total', 'limit', 'page'))
+            //]);
+        //}
+
+        // On va chercher toutes les catégories
+        $categories = $catRepo->findAll();
+
+        return $this->render('front/forum/pagination.html.twig',
+            [
+                'forum' => $categories,
+                'commentaire' =>  $annonces,
+                'total'=> $total,
+                'limit'=> $limit ,
+                 'page'=> $page
+            ]);
+    }
+
+    /**
+     * @param ForumRepository $repository
+     * @param Request $request
+     * @param Forum $forum
+     * @Route("/AfficheForum",name="AfficheForum")
+     */
+
+
+    public function paginationP(ForumRepository $repository,Request $request)
+    {
+        $limit=1;
+        $page=(int)$request->query->get("page",1);
+        $comm=$repository->paginatedAnnonces($page,$limit);
+        $total=$repository->getTotalAnnonces();
+
+
+        return $this->render('front/forum/index.html.twig',[
+            'pagination' => true,
+            'forum'=> $comm,
+            'total'=>$total,
+            'limit'=>$limit,
+            'page'=>$page
+
+        ]);
+
+
+    }
+
 
 
 }

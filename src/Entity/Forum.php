@@ -39,14 +39,23 @@ class Forum
      */
     private $probleme;
 
+
+
+
     /**
      * @ORM\OneToMany(targetEntity=Commenter::class, mappedBy="forum", orphanRemoval=true)
      */
     private $commenters;
 
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $date;
+
     public function __construct()
     {
         $this->commenters = new ArrayCollection();
+        $this->date = new \DateTime('now');
     }
 
     public function getId(): ?int
@@ -104,6 +113,18 @@ class Forum
                 $commenter->setForum(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDate(): ?\DateTimeInterface
+    {
+        return $this->date;
+    }
+
+    public function setDate(\DateTimeInterface $date): self
+    {
+        $this->date = $date;
 
         return $this;
     }

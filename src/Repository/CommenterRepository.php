@@ -47,4 +47,36 @@ class CommenterRepository extends ServiceEntityRepository
         ;
     }
     */
+    public function paginatedAnnonces($page, $limit){
+        $query = $this->createQueryBuilder('a')
+        ->setFirstResult(($page * $limit) - $limit)
+            ->setMaxResults($limit);
+        return $query->getQuery()->getResult();
+
+        // On filtre les données
+       // if($filters != null){
+         //   $query->andWhere('a.forum IN(:cats)')
+           //     ->setParameter(':cats', array_values($filters));
+        //}
+
+      //  $query->orderBy('a.date')
+            //->setFirstResult(($page * $limit) - $limit)
+           // ->setMaxResults($limit)
+       // ;
+
+    }
+
+    public function getTotalAnnonces(){
+        $query = $this->createQueryBuilder('a')
+            ->select('COUNT(a)');
+
+        // On filtre les données
+       // if($filters != null){
+         //   $query->andWhere('a.forum IN(:cats)')
+           //     ->setParameter(':cats', array_values($filters));
+        //}
+
+        return $query->getQuery()->getSingleScalarResult();
+    }
+
 }
