@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Repository;
-
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use App\Entity\Offre;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -47,4 +47,11 @@ class OffreRepository extends ServiceEntityRepository
         ;
     }
     */
+    public function search($nom) {
+        return $this->createQueryBuilder('Offre')
+            ->andWhere('Offre.nom LIKE :nom')
+            ->setParameter('nom', '%'.$nom.'%')
+            ->getQuery()
+            ->getResult();
+    }
 }

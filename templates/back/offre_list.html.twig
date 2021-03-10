@@ -7,6 +7,17 @@
     <div class="row">
     <div class="col-md-12">
     <div class="card">
+    <form class="navbar-form" method="post" action="{{ path('offre_list') }}">
+        {{ form_start(searchForm) }}
+        <div class="input-group no-border">
+        {{ form_widget(searchForm.nom) }}
+            <button class="btn btn-default btn-round btn-just-icon">
+              {{ button_label|default('search') }}
+            </button>
+        </div>
+
+    </form>
+    {{ form_end(searchForm) }}
     <div class="card-header card-header-primary">
         <h4 class="card-title ">Offre</h4>
         <p class="card-category"> List of Offre</p>

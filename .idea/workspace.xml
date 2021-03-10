@@ -127,6 +127,13 @@
       <path value="$PROJECT_DIR$/vendor/gregwar/captcha" />
       <path value="$PROJECT_DIR$/vendor/symfony/swiftmailer-bundle" />
       <path value="$PROJECT_DIR$/vendor/swiftmailer/swiftmailer" />
+      <path value="$PROJECT_DIR$/vendor/friendsofsymfony/ckeditor-bundle" />
+      <path value="$PROJECT_DIR$/vendor/behat/transliterator" />
+      <path value="$PROJECT_DIR$/vendor/gedmo/doctrine-extensions" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/doctrine-fixtures-bundle" />
+      <path value="$PROJECT_DIR$/vendor/doctrine/data-fixtures" />
+      <path value="$PROJECT_DIR$/vendor/knplabs/knp-paginator-bundle" />
+      <path value="$PROJECT_DIR$/vendor/knplabs/knp-components" />
     </include_path>
   </component>
   <component name="ProjectId" id="1oz6S9mRv6VXNa0N4WpMTXvXcHP" />
@@ -138,20 +145,20 @@
     <property name="DatabaseDriversLRU" value="mysql" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Symfony-3.4-Blog-master" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\ASUS\Desktop\Sprint_web\templates\front" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\ASUS\Desktop\Sprint_web\public\Frontoffice\images" />
       <recent name="C:\Users\ASUS\Desktop\Sprint_web\templates\back" />
       <recent name="C:\Users\ASUS\Desktop\Sprint_web\templates\back\categorie" />
       <recent name="C:\Users\ASUS\Desktop\Sprint_web\templates\front\offre" />
       <recent name="C:\Users\ASUS\Desktop\Sprint_web\templates\front" />
-      <recent name="C:\Users\ASUS\Desktop\Sprint_web\templates" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\ASUS\Desktop\Sprint_web\templates\front" />
     </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -175,7 +182,19 @@
       <workItem from="1614716636155" duration="6112000" />
       <workItem from="1614726812428" duration="3321000" />
       <workItem from="1614763846924" duration="8404000" />
-      <workItem from="1614789217878" duration="6309000" />
+      <workItem from="1614789217878" duration="10748000" />
+      <workItem from="1614846070296" duration="2548000" />
+      <workItem from="1614948140197" duration="7375000" />
+      <workItem from="1614967855535" duration="18516000" />
+      <workItem from="1615046901898" duration="19885000" />
+      <workItem from="1615115128251" duration="1027000" />
+      <workItem from="1615133445837" duration="18563000" />
+      <workItem from="1615228691182" duration="19781000" />
+      <workItem from="1615256173617" duration="112000" />
+      <workItem from="1615291042547" duration="5888000" />
+      <workItem from="1615316442410" duration="6745000" />
+      <workItem from="1615371793377" duration="4751000" />
+      <workItem from="1615399703279" duration="5280000" />
     </task>
     <servers />
   </component>
@@ -191,14 +210,26 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="526" y="214" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1536.824@0.0.1536.824" timestamp="1614535316229" />
-    <state x="499" y="167" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1614613797113">
+    <state x="499" y="167" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1615374182943">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="499" y="167" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1536.824@0.0.1536.824" timestamp="1614613797113" />
-    <state x="549" y="167" key="FileChooserDialogImpl" timestamp="1614690379867">
+    <state x="499" y="167" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1536.824@0.0.1536.824" timestamp="1615374182943" />
+    <state x="547" y="324" width="442" height="265" key="ComposerInitDialogKey" timestamp="1615292234428">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="549" y="167" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1614690379867" />
+    <state x="547" y="324" width="442" height="265" key="ComposerInitDialogKey/0.0.1536.824@0.0.1536.824" timestamp="1615292234428" />
+    <state x="549" y="167" key="FileChooserDialogImpl" timestamp="1615139487544">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="549" y="167" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1615139487544" />
+    <state x="466" y="270" key="NewPhpClassDialog" timestamp="1615372862478">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="466" y="270" key="NewPhpClassDialog/0.0.1536.824@0.0.1536.824" timestamp="1615372862478" />
+    <state x="604" y="335" key="NewPhpFileDialog" timestamp="1615073112123">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="604" y="335" key="NewPhpFileDialog/0.0.1536.824@0.0.1536.824" timestamp="1615073112123" />
     <state x="425" y="187" key="run.anything.popup" timestamp="1614635187819">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -209,8 +240,13 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="php">
           <url>file://$PROJECT_DIR$/templates/header.html.twig</url>
-          <line>46</line>
+          <line>134</line>
           <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="php">
+          <url>file://$PROJECT_DIR$/src/Controller/FrontController.php</url>
+          <line>129</line>
+          <option name="timeStamp" value="2" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

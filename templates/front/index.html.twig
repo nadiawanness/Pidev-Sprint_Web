@@ -27,11 +27,10 @@
     <div class="section wb">
         <div class="container">
             <div class="section-title text-center clearfix">
-                <h4>Our Categorie</h4>
+                <h4>Our Domaine</h4>
             </div>
-            <div class="row">
+                <div class="row">
             {% for categorie in categories %}
-
                 <div class="col-sm-3 col-xs-12">
                     <div class="service-tab">
                         <div class="post-media">
@@ -43,10 +42,62 @@
                     </div><!-- end service-tab -->
                 </div><!-- end col -->
                 {% endfor %}
-            </div>
-                <div class="loadmorebutton text-center clearfix">
-                    <a href="{{ path('addjob') }}" class="btn btn-primary">Submit Your Offre</a>
-                </div><!-- end loadmore -->
+                </div>
+             {% if(app.session.get('id')==null) %}
+                  <div id="modal-wrapper" class="modal">
+                <form class="modal-content animate"  method="post" >
+                   {{ form_start(form) }}
+                    <div class="imgcontainer">
+                        <span onclick="document.getElementById('modal-wrapper').style.display='none'" class="close" title="Close PopUp"></span>
+                        <img src="/Frontoffice/images/1.png" alt="Avatar" class="avatar">
+                        <h1 style="text-align:center">Login</h1>
+                    </div>
+                    <div class="container">
+                        {{ form_widget(form.mail)}}
+                        {{ form_widget(form.mdp)}}
+                        {{ form_widget(form) }}
+                        <button class="btn btn-primary btn-block">{{ button_label|default('Login') }}</button>
+                    </div>
+                   {{ form_end(form) }}
+                </form>
+                {% elseif (app.session.get('type')=='candidat') %}
+                          <div id="modal-wrapper" class="modal">
+                              <form class="modal-content animate"  method="post" >
+                                  {{ form_start(form) }}
+                                  <div class="imgcontainer">
+                                      <span onclick="document.getElementById('modal-wrapper').style.display='none'" class="close" title="Close PopUp"></span>
+                                      <img src="/Frontoffice/images/1.png" alt="Avatar" class="avatar">
+                                      <h1 style="text-align:center">Login</h1>
+                                  </div>
+                                  <div class="container">
+                                      {{ form_widget(form.mail)}}
+                                      {{ form_widget(form.mdp)}}
+                                      {{ form_widget(form) }}
+                                      <button class="btn btn-primary btn-block">{{ button_label|default('Login') }}</button>
+                                  </div>
+                                  {{ form_end(form) }}
+
+
+
+                              </form>
+                             </div>
+                     {% elseif app.session.get('type')=='recruteur'%}
+                         <a href="{{ path('addjob') }}" class="btn btn-primary">Submit Your Offre</a>
+                         {% else %}
+
+{% endif %}
+            <script>
+                // If user clicks anywhere outside of the modal, Modal will close
+
+                var modal = document.getElementById('modal-wrapper');
+                window.onclick = function(event) {
+                    if (event.target == modal) {
+                        modal.style.display = "none";
+                    }
+                }
+            </script>
+            </div><!-- end loadmore -->
             </div><!-- end container -->
         </div><!-- end section -->
+
 {% endblock %}

@@ -5,16 +5,104 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <style>
+        *{margin:0px; padding:0px; font-family:Helvetica, Arial, sans-serif;}
 
+        /* Full-width input fields */
+        input[type=text], input[type=password] {
+            width: 50%;
+            padding: 14px 20px;
+            margin: 8px 26px;
+            display: inline-block;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+            font-size:16px;
+        }
+
+
+        /* Set a style for all buttons */
+        button {
+            background-color: brown;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 26px;
+            border: none;
+            cursor: pointer;
+            width: 60%;
+            font-size:20px;
+        }
+        button:hover {
+            opacity: 0.8;
+        }
+
+        /* Center the image and position the close button */
+        .imgcontainer {
+            text-align: center;
+            margin: 24px 0 12px 0;
+            position: relative;
+        }
+        .avatar {
+            width: 200px;
+            height:200px;
+            border-radius: 50%;
+        }
+
+        /* The Modal (background) */
+        .modal {
+            display:none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+
+        /* Modal Content Box */
+        .modal-content {
+            background-color: #fefefe;
+            margin: 4% auto 15% auto;
+            border: 1px solid #888;
+            width: 50%;
+            padding-bottom: 30px;
+        }
+
+        /* The Close Button (x) */
+        .close {
+            position: absolute;
+            right: 25px;
+            top: 0;
+            color: #000;
+            font-size: 35px;
+            font-weight: bold;
+        }
+        .close:hover,.close:focus {
+            color: red;
+            cursor: pointer;
+        }
+
+        /* Add Zoom Animation */
+        .animate {
+            animation: zoom 0.6s
+        }
+        @keyframes zoom {
+            from {transform: scale(0)}
+            to {transform: scale(1)}
+        }
+    </style>
     <!-- SITE META -->
     <title>{% block title %}Work It{% endblock %}</title>
     <meta name="description" content="">
     <meta name="author" content="">
     <meta name="keywords" content="">
     {% block stylesheets %}
+
         {#{{ encore_entry_link_tags('app') }}#}
 
     <!-- FAVICONS -->
+
     <link rel="shortcut icon" href="/Frontoffice/images/favicon.ico" type="image/x-icon">
     <link rel="apple-touch-icon" href="/Frontoffice/images/apple-touch-icon.png">
     <link rel="apple-touch-icon" sizes="57x57" href="/Frontoffice/images/apple-touch-icon-57x57.png">
@@ -81,7 +169,9 @@
                                                                 <div class="row">
                                                                     <div class="col-md-6">
                                                                         <ul>
+                                                                            {% if app.session.get('type')=="recruteur" %}
                                                                             <li><a href="{{ path('addjob') }}">Add a Offre</a></li>
+                                                                            {% endif %}
                                                                             <li><a href="{{ path('offre1') }}">Check offre</a></li>
                                                                             <li><a href="job-search.html">Job Search</a></li>
                                                                             <li><a href="job-search-map.html">Job Search Map</a></li>
@@ -165,7 +255,7 @@
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><img src="Frontoffice/upload/testi_03.png" alt="" class="img-circle"> <span class="caret"></span></a>
                                 <ul class="dropdown-menu start-right">
                                     <li class="dropdown-header">Welcome Jenny</li>
-                                    <li><a href="freelancer-profile.html"><span class="glyphicon glyphicon-user"></span> Public Profile</a></li>
+                                    <li><a href="{{ path('profil_det') }}"><span class="glyphicon glyphicon-user"></span> Public Profile</a></li>
                                     <li><a href="freelancer-dashboard.html"><span class="glyphicon glyphicon-off"></span> User Dashboard</a></li>
                                     <li><a href="freelancer-edit-resume.html"><span class="glyphicon glyphicon-edit"></span> Edit Resume / CV</a></li>
                                     <li><a href="freelancer-active-jobs.html"><span class="glyphicon glyphicon-briefcase"></span> Active Jobs</a></li>
@@ -175,6 +265,11 @@
                                 </ul>
                             </li>
                             <li><a class="btn btn-primary" title="" href="job-add.html">Submit Job</a></li>
+                            {% if app.session.get('id')==null %}
+                            <li><a class="btn btn-primary" title="" href="{{ path('Login') }}">Login</a></li>
+                            {% else %}
+                            <li><a class="btn btn-primary" href="{{ path('Logout') }}">Logout</a></li>
+                           {% endif %}
                         </ul>
                         <!-- end dropdown -->
                     </div>
@@ -322,6 +417,19 @@
     <div class="dmtop"><i class="fa fa-angle-up"></i></div>
 
     </div><!-- end wrapper -->
+          <!--Start of Tawk.to Script-->
+    <script type="text/javascript">
+        var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+        (function(){
+            var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+            s1.async=true;
+            s1.src='https://embed.tawk.to/6049113f385de407571ec2ac/1f0emn1gp';
+            s1.charset='UTF-8';
+            s1.setAttribute('crossorigin','*');
+            s0.parentNode.insertBefore(s1,s0);
+        })();
+    </script>
+    <!--End of Tawk.to Script-->
 {% endblock %}
 {% block js %}
 

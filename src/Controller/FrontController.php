@@ -2,11 +2,22 @@
 namespace App\Controller;
 
 use App\Entity\Categorie;
+use App\Entity\Comment;
 use App\Entity\Offre;
+use App\Entity\Postuler;
+use App\Entity\Recruteur;
+use App\Form\CandidatType;
 use App\Form\CategorieType;
+use App\Form\CommentType;
+use App\Form\CreateType;
 use App\Form\OffreType;
+use App\Form\RecruteurType;
 use App\Repository\CategorieRepository;
+use App\Repository\CommentRepository;
 use App\Repository\OffreRepository;
+use App\Repository\PostulerRepository;
+use App\Repository\RecruteurRepository;
+use Doctrine\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,24 +25,110 @@ use Symfony\Component\Routing\Annotation\Route;
 use Swift_SmtpTransport;
 use Swift_Mailer;
 use Swift_Message;
+use Symfony\Component\HttpFoundation\Session\Session;
 class FrontController extends AbstractController
 {
     /**
      * @Route("/front", name="front")
      */
-    public function index(CategorieRepository $categorieRepository): Response
+    public function index(CategorieRepository $categorieRepository,Request $request,RecruteurRepository $repository): Response
     {
+        $recruteur = new Recruteur();
+        $form=$this->createForm(RecruteurType::class,$recruteur);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $recruteurCheck = $repository->findOneBy(['mail' => $recruteur->getMail()]);
+            if($recruteur->getMdp()==$recruteurCheck->getMdp())
+            {
+                $session= new Session();
+                $session->set('id',$recruteurCheck->getId());
+                $session->set('nom',$recruteurCheck->getNom());
+                $session->set('type',$recruteurCheck->getType());
+                $session->set('mail',$recruteur->getMail());
+                $session->set('competence',$recruteurCheck->getCompetence());
+            }
+
+        }
         return $this->render('front/index.html.twig', [
             'categories' => $categorieRepository->findAll(),
+            'form' => $form->createView(),
+
         ]);
     }
+    /**
+     * @Route("/Logout", name="Logout")
+     */
+    public function Logout(Request $request)
+    {
+        $session = $request->getSession();
+        $session->clear();
+        return $this->redirectToRoute('front');
+    }
+    /**
+     * @Route("/offredelete1/", name="post", methods={"GET","POST"})
+     */
+    public function post(Request $request, Offre $offre,RecruteurRepository $repository): Response
+    {
+        $offre = new Offre();
+        $value=$repository->find($this->get('session')->get('id'));
 
+        return $this->redirectToRoute('offre1');
+    }
+    /**
+     * @Route("/addrec", name="addrec", methods={"GET","POST"})
+     */
+    public function addrec(Request $request,RecruteurRepository $repository): Response
+    {
+        $recruteur = new Recruteur();
+        $form = $this->createForm(CreateType::class, $recruteur);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $uploadedFile = $form['photo']->getData();
+            $filename = md5(uniqid()).'.'.$uploadedFile->guessExtension();
+            $uploadedFile->move($this->getParameter('upload_directory'),$filename);
+            $recruteur->setPhoto($filename);
+            $recruteur->setType('recruteur');
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($recruteur);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('Login');
+        }
+        return $this->render('/front/recruteur_type.html.twig', [
+            'recruteurs' => $repository->findAll(),'form' => $form->createView(),
+        ]);
+    }
+    /**
+     * @Route("/addcand", name="addcand", methods={"GET","POST"})
+     */
+    public function addcand(Request $request,RecruteurRepository $repository): Response
+    {
+        $recruteur = new Recruteur();
+        $form = $this->createForm(CandidatType::class, $recruteur);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $uploadedFile = $form['photo']->getData();
+            $filename = md5(uniqid()).'.'.$uploadedFile->guessExtension();
+            $uploadedFile->move($this->getParameter('upload_directory'),$filename);
+            $recruteur->setPhoto($filename);
+            $recruteur->setType('candidat');
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($recruteur);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('Login');
+        }
+        return $this->render('/front/candidat_type.html.twig', [
+            'recruteurs' => $repository->findAll(),'form' => $form->createView(),
+        ]);
+    }
     /**
      * @Route("/addjob", name="addjob", methods={"GET","POST"})
      */
-    public function addjob(CategorieRepository $categorieRepository,Request $request): Response
+    public function addjob(CategorieRepository $categorieRepository,Request $request,RecruteurRepository $repository): Response
     {
         $offre = new Offre();
+        $value=$repository->find($this->get('session')->get('id'));
         $form = $this->createForm(OffreType::class, $offre);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -39,6 +136,7 @@ class FrontController extends AbstractController
             $filename = md5(uniqid()).'.'.$uploadedFile->guessExtension();
             $uploadedFile->move($this->getParameter('upload_directory'),$filename);
             $offre->setLogo($filename);
+            $offre->addRecruteur($value);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($offre);
             $entityManager->flush();
@@ -49,7 +147,15 @@ class FrontController extends AbstractController
             'categories' => $categorieRepository->findAll(),'form' => $form->createView(),
         ]);
     }
-
+    /**
+     * @Route("/profil_det", name="profil_det", methods={"GET"})
+     */
+    public function profil_det(RecruteurRepository $recruteurRepository): Response
+    {
+        return $this->render('/front/profil_det.html.twig', [
+            'recruteurs' => $recruteurRepository->findAll(),
+        ]);
+    }
     /**
      * @Route("/offre1", name="offre1", methods={"GET"})
      */
@@ -69,7 +175,79 @@ class FrontController extends AbstractController
             'offres' => $offretype,
         ]);
     }
+    /**
+     * @Route("/login", name="Login")
+     */
+    public function login(Request $request,RecruteurRepository $repository)
+    {
+        $recruteur = new Recruteur();
+        $form=$this->createForm(RecruteurType::class,$recruteur);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $recruteurCheck = $repository->findOneBy(['mail' => $recruteur->getMail()]);
+            if($recruteur->getMdp()==$recruteurCheck->getMdp())
+            {
+                $session= new Session();
+                $session->set('id',$recruteurCheck->getId());
+                $session->set('nom',$recruteurCheck->getNom());
+                $session->set('mail',$recruteur->getMail());
+                $session->set('type',$recruteurCheck->getType());
+            }
 
+        }
+        return $this->render('/front/login.html.twig', [
+            'form' => $form->createView(),
+        ]);
+
+    }
+    /**
+     * @Route("/make/{id}", name="make", methods={"GET","POST"})
+     */
+    public function make(OffreRepository $offreRepository,$id,Request $request,RecruteurRepository $repository,CommentRepository $commentRepository): Response
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $offre = $entityManager->getRepository(Offre::class)->find($id);
+        $value = $offre->getAbn();
+        $value = $value + 1 ;
+        $offre->setAbn($value);
+        $entityManager->flush();
+        $comment = new Comment();
+        $session = $request->getSession();
+        $form1 = $this->createForm(CommentType::class,$comment);
+        $form1->handleRequest($request);
+        if ($form1->isSubmitted() && $form1->isValid()) {
+            $comment->setCreatedAt(new \DateTime())
+                ->setOffre($offre)
+                ->setAuthorName($this->get('session')->get('mail'));
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($comment);
+            $entityManager->flush();
+            return $this->redirectToRoute('make',['id'=>$id]);
+        }
+        $recruteur = new Recruteur();
+        $form=$this->createForm(RecruteurType::class,$recruteur);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $recruteurCheck = $repository->findOneBy(['mail' => $recruteur->getMail()]);
+            if($recruteur->getMdp()==$recruteurCheck->getMdp())
+            {
+                $session= new Session();
+                $session->set('id',$recruteurCheck->getId());
+                $session->set('nom',$recruteurCheck->getNom());
+                $session->set('type',$recruteurCheck->getType());
+                $session->set('mail',$recruteur->getMail());
+            }
+
+        }
+        $offretype = $offreRepository->findBy(['id' => $id]);
+        $offrepost = $commentRepository->findBy(['offre'=>$offre]);
+        return $this->render('/front/make.html.twig', [
+            'comments'=> $offrepost,
+            'offres' => $offretype,
+            'form' => $form->createView(),
+            'commentForm'=>$form1->createView(),
+        ]);
+    }
 
 
 
@@ -101,5 +279,87 @@ class FrontController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+    /**
+     * @Route("edit1/{id}", name="edit1", methods={"GET","POST"})
+     */
+    public function edit1(Request $request, Offre $offre,OffreRepository $offreRepository,$id): Response
+    {
+        /*$value =   $offre->getNb();
+        $value ++ ;
+        $offre->setNb($value);*/
+        $offre=$offreRepository->find($id);
+        $form = $this->createForm(OffreType::class, $offre);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $uploadedFile = $form['logo']->getData();
+            $filename = md5(uniqid()).'.'.$uploadedFile->guessExtension();
+            $uploadedFile->move($this->getParameter('upload_directory'),$filename);
+            $offre->setLogo($filename);
+            $this->getDoctrine()->getManager()->flush();
+            return $this->redirectToRoute('offre1');
+        }
+        return $this->render('front/offre/edit1.html.twig', [
+            'offre' => $offre,
+            'form' => $form->createView(),
+        ]);
+    }
+    /**
+     * @Route("/offredelete1/{id}", name="offredelete1", methods={"DELETE"})
+     */
+    public function delete(Request $request, Offre $offre): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$offre->getId(), $request->request->get('_token'))) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($offre);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('offre1');
+    }
+
+    /**
+     * @Route("/offre/{id}/like", name="post_like")
+     * @param Offre $offre
+     * @param ObjectManager $manager
+     * @param PostulerRepository $postulerRepository
+     * @param RecruteurRepository $repository
+     * @return Response
+     */
+    public function like(Offre $offre,PostulerRepository $postulerRepository,RecruteurRepository $repository): Response
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $user=$repository->find($this->get('session')->get('id'));
+        if(!$user) return $this->json([
+            'code'=>403,
+            'message'=>"Unauthorized"
+        ],403);
+        if($offre->isLikedByRecruteur($user))
+        {
+            $like = $postulerRepository->findOneBy([
+                'offre'=>$offre,
+                'recruteur'=>$user
+            ]);
+
+            $entityManager->remove($like);
+            $entityManager->flush();
+            return $this->json([
+                'code'=>200,
+                'message'=>'like bien supprimé',
+                'likes'=>$postulerRepository->count(['offre'=>$offre])
+            ],200);
+        }
+        $like = new Postuler();
+        $like->setOffre($offre);
+        $like->setRecruteur($user);
+        $entityManager->persist($like);
+        $entityManager->flush();
+    return  $this->json([
+        'code'=>200,
+        'message'=>'ca marche',
+        'likes'=>$postulerRepository->count(['offre'=>$offre])
+        ],200);
+    }
+
 }
 

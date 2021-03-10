@@ -4,17 +4,24 @@ namespace App\Controller;
 
 use App\Entity\Categorie;
 use App\Entity\Offre;
+use App\Entity\Recherche;
 use App\Form\CategorieType;
 use App\Form\OffreType;
 use App\Repository\CategorieRepository;
 use App\Repository\OffreRepository;
+use App\Repository\RechercheRepository;
+use App\Repository\RecruteurRepository;
+use Doctrine\DBAL\Types\TextType;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Dompdf\Dompdf;
 use Dompdf\Options;
+
 class BackController extends AbstractController
 {
     /**
@@ -45,12 +52,60 @@ class BackController extends AbstractController
         ]);
     }
     /**
-     * @Route("/offre_list", name="offre_list", methods={"GET"})
+     * @Route("/user", name="user", methods={"GET"})
      */
-    public function offre(OffreRepository $offreRepository): Response
+    public function user(RecruteurRepository $recruteurRepository): Response
     {
+        return $this->render('back/user.html.twig', [
+            'recruteurs' => $recruteurRepository->findAll(),
+        ]);
+    }
+    /**
+     * @Route("/search/{nom}", name="search", methods={"GET","POST"})
+     */
+    public function search(OffreRepository $offreRepository,$nom,Request $request): Response
+    {
+        $offre = new Offre();
+        $searchForm = $this->createForm(\App\Form\SearchType::class,$offre);
+        $searchForm->handleRequest($request);
+        if ($searchForm->isSubmitted()) {
+            $nom = $searchForm['nom']->getData();
+            $donnees = $offreRepository->search($nom);
+            return $this->redirectToRoute('search', array('nom' => $nom));
+        }
+        $offre = $offreRepository->search($nom);
         return $this->render('back/offre_list.html.twig', [
-            'offres' => $offreRepository->findAll(),
+            'offres' => $offre,
+            'searchForm' => $searchForm->createView()
+        ]);
+    }
+    /**
+     * @Route("/offre_list", name="offre_list", methods={"GET","POST"})
+     */
+    public function offre(OffreRepository $offreRepository,Request $request, PaginatorInterface $paginator): Response
+    {
+        $offre = new Offre();
+        $searchForm = $this->createForm(\App\Form\SearchType::class,$offre);
+        $searchForm->handleRequest($request);
+        if ($searchForm->isSubmitted()) {
+            $nom = $searchForm['nom']->getData();
+            $donnees = $offreRepository->search($nom);
+            return $this->redirectToRoute('search', array('nom' => $nom));
+        }
+        $donnees = $this->getDoctrine()->getRepository(Offre::class)->findBy([],['abn' => 'desc']);
+
+        // Paginate the results of the query
+        $offres = $paginator->paginate(
+        // Doctrine Query, not results
+            $donnees,
+            // Define the page parameter
+            $request->query->getInt('page', 1),
+            // Items per page
+            4
+        );
+        return $this->render('back/offre_list.html.twig', [
+            'offres' => $offres,
+            'searchForm' => $searchForm->createView()
         ]);
     }
     /**

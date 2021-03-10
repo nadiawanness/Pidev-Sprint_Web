@@ -15,6 +15,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Gregwar\CaptchaBundle\Type\CaptchaType;
 //use Captcha\Bundle\CaptchaBundle\Form\Type\CaptchaType;
 //use Captcha\Bundle\CaptchaBundle\Validator\Constraints\ValidCaptcha;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 class OffreType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
