@@ -40,14 +40,18 @@
 
 
                                 {% for f in forum %}
-                                    <h5 class="card-title">{{f.sujet}}
-                                        {% if f.commenters.count>0 %}
-                                            ({{f.commenters.count  }})
-                                        {% endif %}
-                                    </h5>
+                                
+                                    <h1>{{f.sujet}}</h1>
 
                                     <p class="card-text">{{f.probleme}}</p>
-                                    <p class="card-text">{{ f.date ? f.date|date('d-m-Y H:i:s') : '' }}</p>
+                                    <div class="card-footer text-muted">
+                                        {{ f.date ? f.date|date('d-m-Y H:i:s') : '' }}
+                                    </div>
+                                  {# <p class="card-text">{{ f.date ? f.date|date('d-m-Y H:i:s') : '' }}</p>#}
+                                    {% if f.commenters.count>0 %}
+                                        <h5>Le nombre de commentaires dans ce forum est:{{f.commenters.count  }}</h5>
+
+                                    {% endif %}
 
                                     <a class="btn btn-danger" href="{{ path ('d',{'id':f.id}) }}">Effacer</a>
                                     <a class="btn btn-danger" href="{{ path ('u',{'id':f.id}) }}">Modifier</a>
@@ -56,11 +60,14 @@
                                 {% endfor %}
 
 
-                                {% if pagination == true %}
+
+
+                            </div>
+                            {% if pagination == true %}
                                 <ul class="pagination">
                                     <li class="{{ (page==1) ? 'disabled' : '' }}">
                                         <a href="{{ (page > 1) ? '?page=' ~ (page-1) : ''  }}">
-                                          {#<i class="fas fa-angle-left"></i> #}
+                                            {#<i class="fas fa-angle-left"></i> #}
                                             Précédant
                                         </a>
                                     </li>
@@ -72,17 +79,13 @@
                                     {% endfor %}
                                     <li class="{{ (page==pages) ? 'disabled' : '' }}">
                                         <a href="{{ (page <pages) ? '?page=' ~ (page+1) : ''  }}">
-                                          {#<i class="fas fa-angle-right"></i> #}
+                                            {#<i class="fas fa-angle-right"></i> #}
                                             Suivant
                                         </a>
                                     </li>
 
                                 </ul>
-                                {% endif %}
-
-
-                            </div>
-
+                            {% endif %}
                         </div>
 
                         {# <div class="card" style="width: 18rem;">
@@ -133,6 +136,8 @@
                                 </table>
                             </div>
                         </table> #}
+
+
                     </div><!-- end post-padding -->
                 </div><!-- end col -->
             </div>

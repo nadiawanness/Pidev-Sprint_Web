@@ -210,28 +210,6 @@ class HelloController extends AbstractController
             'pagination' => false,
             'forum'=>$forum
             ]);
-
-
-
-       /* $limit=1;
-        $page=(int)$request->query->get("page",1);
-        $forums=$repository->paginatedAnnonces($page,$limit, $sujet);
-        $total=$repository->getTotalAnnonces();
-
-
-        return $this->render('front/forum/index.html.twig',[
-            'pagination' => false,
-            'forum'=> $forums,
-
-        ]);*/
-
-
-
-
-
-
-
-
     }
 
    // /**
@@ -253,49 +231,6 @@ class HelloController extends AbstractController
               //  'dates' => $dates,
                 //'annoncesCount' => $annoncesCount
             //]);
-    /**
-     * @param CommenterRepository $annoncesRepo
-     * @param ForumRepository $catRepo
-     * @param Request $request
-     * @return Response
-     * @Route ("/page", name="pagina")
-     */
-
-    public function pagination(CommenterRepository $annoncesRepo, ForumRepository $catRepo, Request $request){
-        // On définit le nombre d'éléments par page
-        $limit = 2;
-
-        // On récupère le numéro de page
-        $page = (int)$request->query->get("page", 1);
-
-        // On récupère les filtres
-        $filters = $request->get("forum");
-
-        // On récupère les annonces de la page en fonction du filtre
-        $annonces = $annoncesRepo->paginatedAnnonces($page, $limit, $filters);
-
-        // On récupère le nombre total d'annonces
-        $total = $annoncesRepo->getTotalAnnonces($filters);
-
-        // On vérifie si on a une requête Ajax ya khra hedhy ghalta
-       // if($request->get('ajax')){
-         //   return new JsonResponse([
-           //     'content' => $this->renderView('annonces/_content.html.twig', compact('annonces', 'total', 'limit', 'page'))
-            //]);
-        //}
-
-        // On va chercher toutes les catégories
-        $categories = $catRepo->findAll();
-
-        return $this->render('front/forum/pagination.html.twig',
-            [
-                'forum' => $categories,
-                'commentaire' =>  $annonces,
-                'total'=> $total,
-                'limit'=> $limit ,
-                 'page'=> $page
-            ]);
-    }
 
     /**
      * @param ForumRepository $repository
