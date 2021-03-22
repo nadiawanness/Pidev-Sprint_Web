@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Users List{% endblock %}
+
+{% block content %}
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <form class="navbar-form" method="post" action="{{ path('user') }}">
+                            {{ form_start(searchForm) }}
+                            <div class="input-group no-border">
+                                {{ form_widget(searchForm.nom) }}
+                                <button class="btn btn-default btn-round btn-just-icon">
+                                    {{ button_label|default('search1') }}
+                                </button>
+                            </div>
+
+                        </form>
+                        {{ form_end(searchForm) }}
+                        <div class="card-header card-header-primary">
+                            <h4 class="card-title ">Users</h4>
+                            <p class="card-category"> List of Users</p>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <a class="btn btn-success" href="{{ path('listo1') }}">Create pdf</a>
+                                    <thead class=" text-primary">
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>Nom</th>
+                                        <th>prenom</th>
+                                        <th>email</th>
+                                        <th>password</th>
+                                        <th>type</th>
+                                        <th>Photo</th>
+                                        <th>competence</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for recruteur in recruteurs %}
+                                        <tr>
+                                            <td>{{ recruteur.id }}</td>
+                                            <td>{{ recruteur.nom }} </td>
+                                            <td>{{ recruteur.prenom }} </td>
+                                            <td>{{ recruteur.mail }}</td>
+                                            <td>{{ recruteur.mdp }}</td>
+                                            <td>{{ recruteur.type }}</td>
+                                            <td> <img src="{{ asset('picture/' ~ recruteur.photo) }}" alt="" width="130" height="130" > </td>
+                                            <td>{{ recruteur.competence }}</td>
+                                            <td>
+                                                <form method="post" action="{{ path('user_delete', {'id': recruteur.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                                                    <input type="hidden" name="_method" value="DELETE">
+                                                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ recruteur.id) }}">
+                                                    <button class="btn btn-warning">Delete</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    {% else %}
+                                        <tr>
+                                            <td colspan="5">no records found</td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                                <a class="btn btn-success" href="{{ path('new') }}">Create new</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
