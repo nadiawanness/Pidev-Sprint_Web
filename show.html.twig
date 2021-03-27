@@ -1,0 +1,137 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Projet{% endblock %}
+
+{% block content %}
+    <div class="sectionnr nopadding wb">
+        <div id="map"></div>
+        <div class="container">
+            <form class="submit-form customform">
+                <div class="row">
+                    <div class="col-md-3 col-sm-6 col-xs-12">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="basic-addon2"><i class="fa fa-search"></i></span>
+                            <input type="text" class="form-control" placeholder="Search Keywords" aria-describedby="basic-addon2">
+                        </div>
+                    </div><!-- end col -->
+
+                    <div class="col-md-3 col-sm-6 col-xs-12">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="basic-addon1"><i class="fa fa-map-o"></i></span>
+                            <input type="text" class="form-control" placeholder="All Locations" aria-describedby="basic-addon1">
+                        </div>
+                    </div><!-- end col -->
+
+                    <div class="col-md-3 col-sm-6 col-xs-12">
+                        <select class="selectpicker" data-style="btn-default" data-live-search="true">
+                            <option>Looking SEO Expert</option>
+                            <option>Looking Web Designer</option>
+                            <option>Looking Developer</option>
+                            <option>Looking Writer</option>
+                            <option>Looking Host Expert</option>
+                        </select>
+                    </div><!-- end col -->
+
+                    <div class="col-md-3 col-sm-6 col-xs-12">
+                        <button class="btn btn-primary btn-block">Search Freelancer</button>
+                    </div><!-- end col -->
+                </div><!-- end row -->
+
+                <div class="row listcheckbox">
+                    <div class="col-md-9">
+                        <ul class="list-inline">
+                            <li class="checkbox checkbox-primary">
+                                <input id="checkbox_qu_01" type="checkbox" class="styled">
+                                <label for="checkbox_qu_01"><small>Freelancer</small>
+                                </label>
+                            </li>
+                            <li class="checkbox checkbox-primary">
+                                <input id="checkbox_qu_02" type="checkbox" class="styled">
+                                <label for="checkbox_qu_02"><small>Part Time</small>
+                                </label>
+                            </li>
+                            <li class="checkbox checkbox-primary">
+                                <input id="checkbox_qu_03" type="checkbox" class="styled">
+                                <label for="checkbox_qu_03"><small>Full Time</small>
+                                </label>
+                            </li>
+                            <li class="checkbox checkbox-primary">
+                                <input id="checkbox_qu_04" type="checkbox" class="styled">
+                                <label for="checkbox_qu_04"><small>Temporary</small>
+                                </label>
+                            </li>
+                            <li class="checkbox checkbox-primary">
+                                <input id="checkbox_qu_05" type="checkbox" class="styled">
+                                <label for="checkbox_qu_05"><small>Partnership</small>
+                                </label>
+                        </ul>
+                        </li>
+                    </div>
+                    <div class="col-md-3 text-right">
+                        <a href="#" class="readmore">View All</a>
+                    </div>
+                </div><!-- end row -->
+            </form>
+        </div><!-- end container -->
+    </div><!-- end section -->
+    {% for projet in projets %}
+    <div class="section lb">
+        <div class="container">
+            <div class="all-jobs job-listing clearfix">
+                <div class="job-tab">
+                    <div class="row">
+                        <div class="col-md-2 col-sm-2 col-xs-12">
+                            <div class="post-media">
+                                <a href="job-single.html"><img src="/upload/job_07.jpg" alt="" class="img-responsive img-thumbnail"></a>
+                            </div><!-- end media -->
+                        </div><!-- end col -->
+
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <div class="badge freelancer-badge">Freelancer</div>
+                            <h3><a href="job-single.html" title="">{{ projet.projetDescription }}</a></h3>
+                            <small>
+                                <span>Publisher : <a href="#">{{ projet.nomProjet }}</a></span>
+                                <span>In : <a href="#">Article Writing</a></span>
+                                <span>Date : 23.06.2016</span>
+                            </small>
+                        </div><!-- end col -->
+
+                        <div class="col-md-2 col-sm-2 col-xs-12">
+                            <div class="job-meta">
+                                <p>Melbourne</p>
+                                <small>Australia</small>
+                            </div><!-- end meta -->
+                        </div><!-- end col -->
+
+                        <div class="col-md-2 col-sm-2 col-xs-12">
+                            <div class="job-meta text-center">
+                                <h4>$100/mo</h4>
+                                <a href="#" class="btn btn-primary btn-sm btn-block">Make Offer</a>
+                            </div>
+                        </div><!-- end col -->
+                    </div><!-- end row -->
+                </div><!-- end job-tab -->
+
+         {% endfor %}
+
+            </div><!-- end alljobs -->
+
+            <div class="loadmorebutton text-center clearfix">
+                <a href="#" class="btn btn-primary" id="loadMore">Load More Jobs</a>
+            </div><!-- end loadmore -->
+        </div><!-- end container -->
+    </div><!-- end section -->
+
+
+{% endblock %}
+{% block js %}
+<script src="/js/jquery.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/all.js"></script>
+<script src="/js/custom.js"></script>
+<script src="http://maps.googleapis.com/maps/api/js?sensor=false&amp;libraries=places"></script>
+<!-- MAP & CONTACT -->
+<script src="/js/map-freelancer.js"></script>
+<script src="/js/map-upload.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+{% endblock %}
