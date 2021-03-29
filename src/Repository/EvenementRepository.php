@@ -26,11 +26,24 @@ class EvenementRepository extends ServiceEntityRepository
             ->getQuery()->getResult();
     }
 
+
     function OrderByNom(){
         return $this->createQueryBuilder('e')
             ->orderBy('e.nom','ASC')
             ->setMaxResults(500)->getQuery()->getResult();
     }
+
+
+
+    function TotalEvent()
+    {
+        return $this->createQueryBuilder('e')
+            ->select('COUNT(e)')
+            ->getQuery()
+            ->getResult();
+    }
+
+
 
     // /**
     //  * @return Evenement[] Returns an array of Evenement objects

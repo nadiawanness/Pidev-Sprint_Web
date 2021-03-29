@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Categorie;
 use App\Entity\Evenement;
+use App\Entity\Recruteur;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -17,7 +18,12 @@ class EvenementType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('idrecruteur', EntityType::class, [
+                'class' => Recruteur::class,
+                'choice_label' => 'nom',
+            ])
             ->add('nom')
+
             ->add('idcategorie', EntityType::class, [
                 'class' => Categorie::class,
                 'choice_label' => 'nom',
@@ -25,6 +31,8 @@ class EvenementType extends AbstractType
             ->add('date' , DateType::class)
             ->add('description' , TextareaType::class)
             ->add('email' , EmailType::class)
+
+
         ;
     }
 

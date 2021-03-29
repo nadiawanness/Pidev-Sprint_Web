@@ -4,12 +4,15 @@ namespace App\Controller;
 
 use App\Entity\Evenement;
 use App\Form\EvenementType;
+use App\Repository\CategorieRepository;
 use App\Repository\EvenementRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Knp\Component\Pager\PaginatorInterface;
 
 class HomeController extends AbstractController
 {
@@ -53,6 +56,11 @@ class HomeController extends AbstractController
             ;
             $mailer->send($message);
 
+            $value=0;
+            $event->setJaime($value);
+            $event->setJaimepas($value);
+            $event->setNbp($value);
+
             $em=$this->getDoctrine()->getManager();
             $em->persist($event);
             $em->flush();
@@ -64,12 +72,50 @@ class HomeController extends AbstractController
     /**
      * @Route("/afficheevent", name="afficheevent")
      */
-    public function afficheEvent(EvenementRepository $repository)
+    public function afficheEvent(EvenementRepository $repository , Request $request , PaginatorInterface $paginator )
     {
         $event=$repository->findAll();
         $event=$repository->OrderByNom();
-        return $this->render('home/afficheE.html.twig', ['event' => $event,]);
+
+
+        $event = $paginator->paginate(
+
+            $event,//on passe les donnees
+            $request->query->getInt('page',1),
+            4
+
+        );
+
+
+
+
+        return $this->render('home/afficheE.html.twig',compact('event'));
     }
+
+
+    /**
+     * @Route("/filterevent", name="filterevent")
+     */
+    public function filterEvent(EvenementRepository $repository , Request $request , PaginatorInterface $paginator )
+    {
+        $event=$repository->findAll();
+        $event=$repository->Categorie();
+
+
+        $event = $paginator->paginate(
+
+            $event,//on passe les donnees
+            $request->query->getInt('page',1),
+            4
+
+        );
+        return $this->render('home/afficheE.html.twig',compact('event'));
+    }
+
+
+
+
+
 
     /**
      * @param $id
@@ -113,19 +159,67 @@ class HomeController extends AbstractController
 
     }
 
-    /**
-     * @param EvenementRepository $repository
-     * @param Request $request
-     * @return Response
-     * @Route("/rechercheevent",name="rechercheevent")
-     */
 
-    function RechercheEvent(EvenementRepository $repository , Request $request)
+
+
+    /**
+     * @Route("/participeevent/{id}", name="participeevent")
+     */
+    public function participeEvent(EvenementRepository $repository , $id , Request $request)
     {
-        $nom=$request->get('recherche');
-        $event=$repository->RechercheNom($nom);
-        return $this->render('home/afficheE.html.twig' , ['event'=>$event]);
+        $event=$repository->find($id);
+        $new_nb=$event->getNbp() + 1;
+        $event->setNbp($new_nb);
+        $this->getDoctrine()->getManager()->flush();
+        //return $this->render('home/afficheE.html.twig', ['event' => $event]);
+
+        $request
+            ->getSession()
+            ->getFlashBag()
+            ->add('participe', ' Votre participation est enregistre avec succes');
+
+
+        return $this->redirectToRoute('afficheevent');
     }
+
+
+    /**
+     * @param $id
+     * @param EvenementRepository $repository
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @Route("/likeevent/{id}", name="likeevent")
+     */
+    public function likeEvent(EvenementRepository $repository , $id )
+    {
+        $event=$repository->find($id);
+        $new=$event->getJaime() + 1;
+        $event->setJaime($new);
+        $this->getDoctrine()->getManager()->flush();
+        //return $this->render('home/afficheE.html.twig', ['event' => $event]);
+
+        return $this->redirectToRoute('afficheevent');
+    }
+
+    /**
+     * @param $id
+     * @param EvenementRepository $repository
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @Route("/dislikeevent/{id}", name="dislikeevent")
+     */
+    public function dislikeEvent(EvenementRepository $repository , $id )
+    {
+        $event=$repository->find($id);
+        $new=$event->getJaimepas() + 1;
+        $event->setJaimepas($new);
+        $this->getDoctrine()->getManager()->flush();
+        //return $this->render('home/afficheE.html.twig', ['event' => $event]);
+
+        return $this->redirectToRoute('afficheevent');
+    }
+
+
+
+
 
 
 

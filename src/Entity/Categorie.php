@@ -60,9 +60,9 @@ class Categorie
         return $this->idevenement;
     }
 
-    public function addIdoffre(Evenement $idevenement): self
+    public function addIdevenement(Evenement $idevenement): self
     {
-        if (!$this->iidevenement->contains($idevenement)) {
+        if (!$this->idevenement->contains($idevenement)) {
             $this->idevenement[] = $idevenement;
             $idevenement->setIdcategorie($this);
         }
@@ -70,7 +70,7 @@ class Categorie
         return $this;
     }
 
-    public function removeIdoffre(Evenement $idevenement): self
+    public function removeIdevenemnt(Evenement $idevenement): self
     {
         if ($this->idevenement->removeElement($idevenement)) {
             // set the owning side to null (unless already changed)
