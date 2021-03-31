@@ -1,0 +1,70 @@
+{% extends 'back.html.twig' %}
+{% block content %}
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header card-header-primary">
+                            <h4 class="card-title ">Simple Table</h4>
+                            <p class="card-category"> Here is a subtitle for this table</p>
+                        </div>
+                        {% for freelancers in freelancers %}
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead class=" text-primary">
+                                    <th>
+                                        {{ freelancers.id }}
+                                    </th>
+                                    <th>
+                                        Name
+                                    </th>
+                                    <th>
+                                        Country
+                                    </th>
+                                    <th>
+                                        Email
+                                    </th>
+                                    <th>
+                                        Salary
+                                    </th>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>
+                                            {{ freelancers.id }}
+                                        </td>
+                                        <td>
+                                            {{ freelancers.name }}
+                                        </td>
+                                        <td>
+                                            {{ freelancers.country }}
+                                        </td>
+                                        <td>
+                                            {{ freelancers.email }}
+                                        </td>
+                                        <td class="text-primary">
+                                            ${{ freelancers.prix }}
+                                        </td>
+                                        <td>
+                                            {{ include('home/_delete_form.html.twig') }}
+
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,11 +1,11 @@
-{% extends 'dashbord.html.twig' %}
+{% extends 'base.html.twig' %}
 
-{% block title %}New Recruteur{% endblock %}
+{% block title %}New Projet{% endblock %}
 
 {% block body %}
-    <h1>Create new Recruteur</h1>
+    <h1>Create new Projet</h1>
 
-    {{ include('recruteur/_form.html.twig') }}
+    {{ include('projet/_form.html.twig') }}
 
-    <a class="btn btn-secondary" href="{{ path('recruteur_index') }}">back to list</a>
+    <a href="{{ path('projet_index') }}">back to list</a>
 {% endblock %}
