@@ -19,15 +19,15 @@
                                     <a href="{{ path('make',{'id': offre.id }) }}" class="btn btn-primary">Make Offer</a>
                                 </div>
                             </div><!-- end col -->
-                            {% elseif app.session.get('id')==null %}
-                                <div class="col-md-2 col-sm-2 col-xs-12">
-                                    <div class="text-center">
-                                        <a href="{{ path('make',{'id': offre.id }) }}" class="btn btn-primary">Make Offer</a>
-                                    </div>
-                                </div><!-- end col -->
-                        {% elseif app.session.get('type')=="recruteur" %}
+                        {% elseif app.session.get('id')==null %}
+                            <div class="col-md-2 col-sm-2 col-xs-12">
+                                <div class="text-center">
+                                    <a href="{{ path('make',{'id': offre.id }) }}" class="btn btn-primary">Make Offer</a>
+                                </div>
+                            </div><!-- end col -->
+                        {% elseif app.session.get('id')==offre.idrecruteur.id %}
                             <a href="{{ path('edit1',{'id': offre.id }) }}" class="btn btn-primary" > Modifier</a>
-                            {% else %}
+                        {% else %}
                         {% endif %}
                         </div>
                     </div>

@@ -21,10 +21,13 @@
                     <p><span>{{ offre.abn }} vues</span>
                         <span class="pull-right">By : <strong>{{ offre.nom }}</strong></span> </p>
                 </div>
-                {% if  app.session.get('type')!="candidat" %}
+                {% if app.session.get('type')=="recruteur" %}
+                <a href="{{ path('edit1',{'id': offre.id }) }}" class="btn btn-primary" > Modifier</a>
+                {% elseif  app.session.get('type')!="candidat" %}
                     <a class="btn btn-primary" title="" href="{{ path('Login') }}">Connecté</a>
                     <span class="glyphicon glyphicon-arrow-left  visible-sm-inline visible-md-inline visible-lg-inline"></span>
                     <span>N'attendez pas pour vous garantir ce poste !</span>
+
                     {% elseif(app.session.get('id')==null) %}
                         <a class="btn btn-primary" title="" href="{{ path('Login') }}">Connecté</a>
                         <span class="glyphicon glyphicon-arrow-left  visible-sm-inline visible-md-inline visible-lg-inline"></span>
@@ -33,10 +36,8 @@
                     <a  href="{{ path('post_like',{'id':offre.id})}}" class="btn btn-apply btn-primary btn-lg btn-block js-like">Postuler
                         <span class="glyphicon glyphicon-arrow-left  visible-sm-inline visible-md-inline visible-lg-inline"></span>
                         <span>N'attendez pas pour vous garantir ce poste !</span>
-                    <span class="js-likes">{{ offre.likes | length }}</span>
-                    </a>
+                    <span class="js-likes">{{ offre.likes | length }}</span> </a>
                 {% endif %}
-
         </div>
         </section>
     </div>
@@ -49,27 +50,60 @@
     <!------ Include the above in your HEAD tag ---------->
 
     <div class="container">
-        <div class="row">
-            <div class="col-sm-12">
-                <h3>Comments</h3>
-            </div><!-- /col-sm-12 -->
-        </div><!-- /row -->
+        <div class="container">
+            <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo">Show Comments</button>
+            <div id="demo" class="collapse">
 {% for comment in comments %}
-        <div class="row">
-            <div class="col-sm-5">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <strong>{{ comment.authorName }}</strong> <span class="text-muted">commented At {{ comment.createdAt | date('d/m/y') }}</span>
-                    </div>
-                    <div class="panel-body">
-                        {{ comment.content }}
-                    </div><!-- /panel-body -->
-                </div><!-- /panel panel-default -->
-            </div><!-- /col-sm-5 -->
-        </div><!-- /row -->
+    <div class="col-sm-1">
+        <div class="thumbnail">
+            <img class="img-responsive user-photo" src="{{ asset('picture/' ~ comment.idrecruteur.photo)  }}">
+        </div><!-- /thumbnail -->
+    </div><!-- /col-sm-1 -->
+    <div class="row">
+        <div class="col-sm-5">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <strong>{{ comment.authorName }}</strong> <span class="text-muted">commented At {{ comment.createdAt | date('d/m/y') }}</span>
+                    {% for offre in offres %}
+                    {% if app.session.get('id')==offre.idrecruteur.id %}
+                        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+                        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+                        <form method="post" action="{{ path('deletecommentoffre', {'id': comment.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ comment.id) }}">
+                            <button   class="btn btn-default btn-sm">
+                                <span class="glyphicon glyphicon-remove"></span> Remove
+                            </button>
+                        </form>
+                    {% endif %}
+                    {% endfor %}
+                    {% if comment.idrecruteur.id == null %}
+
+                    {% elseif app.session.get('id')== comment.idrecruteur.id %}
+                        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+                        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+                        <form method="post" action="{{ path('deletecomperso', {'id': comment.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ comment.id) }}">
+                            <button   class="btn btn-default btn-sm">
+                                <span class="glyphicon glyphicon-remove"></span> Remove
+                            </button>
+                        </form>
+                    {% endif %}
+                </div>
+                <div class="panel-body">
+                    {{ comment.content }}
+                </div><!-- /panel-body -->
+            </div><!-- /panel panel-default -->
+        </div><!-- /col-sm-5 -->
+    </div><!-- /row -->
+
 {% endfor %}
+            </div>
+        </div>
     </div><!-- /container -->
-        {% if  app.session.get('type')!="candidat" %}
+        {% if  app.session.get('type')=="recruteur" %}
+        {% elseif  app.session.get('type')!="candidat" %}
         <a class="btn btn-primary" title="" href="{{ path('Login') }}">Connecté</a>
         <span class="glyphicon glyphicon-arrow-left  visible-sm-inline visible-md-inline visible-lg-inline"></span>
         <span>N'attendez pas pour votre avis a ce offre !</span>
@@ -77,6 +111,7 @@
         <a class="btn btn-primary" title="" href="{{ path('Login') }}">Connecté</a>
         <span class="glyphicon glyphicon-arrow-left  visible-sm-inline visible-md-inline visible-lg-inline"></span>
         <span>N'attendez pas pour votre avis a ce offre !</span
+
                 {% else %}
                 <div class="container">
                     <div class="row">
@@ -98,7 +133,6 @@
                                 </form>
 
                     </div>
-
                 {% endfor %}
 
 {% endif %}

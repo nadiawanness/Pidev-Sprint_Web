@@ -5,6 +5,8 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     upload_directory: '%kernel.project_dir%/public/picture'
+    knp_snappy:
+        temporary_folder: "%kernel.cache_dir%/knp_snappy"
 services:
     # default configuration for services in *this* file
     _defaults:

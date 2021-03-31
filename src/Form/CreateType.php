@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Recruteur;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -16,7 +17,7 @@ class CreateType extends AbstractType
             ->add('nom')
             ->add('prenom')
             ->add('mail')
-            ->add('mdp')
+            ->add('mdp',PasswordType::class)
             ->add('nomsociete')
             ->add('adresse')
             ->add('numsociete')

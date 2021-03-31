@@ -35,7 +35,10 @@ class Comment
      * @ORM\JoinColumn(nullable=false)
      */
     private $offre;
-
+    /**
+     * @ORM\ManyToOne(targetEntity=Recruteur::class, inversedBy="idcomment")
+     */
+    private $idrecruteur;
     public function getId(): ?int
     {
         return $this->id;
@@ -86,6 +89,16 @@ class Comment
     {
         $this->offre = $offre;
 
+        return $this;
+    }
+    public function getIdrecruteur(): ?Recruteur
+    {
+        return $this->idrecruteur;
+    }
+
+    public function setIdrecruteur(?Recruteur $idrecruteur): self
+    {
+        $this->idrecruteur = $idrecruteur;
         return $this;
     }
 }

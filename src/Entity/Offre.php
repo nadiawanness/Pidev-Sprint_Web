@@ -56,11 +56,11 @@ class Offre
      * @ORM\ManyToOne(targetEntity=Categorie::class, inversedBy="idoffre")
      */
     private $idcategoriy;
-
     /**
-     * @ORM\ManyToMany(targetEntity=Recruteur::class, mappedBy="offre")
+     * @ORM\ManyToOne(targetEntity=Recruteur::class, inversedBy="idoffre")
      */
-    private $recruteurs;
+    private $idrecruteur;
+
 
     /**
      * @ORM\Column(type="integer")
@@ -79,8 +79,6 @@ class Offre
 
     public function __construct()
     {
-        $this->recruteurs = new ArrayCollection();
-        $this->candidats = new ArrayCollection();
         $this->comments = new ArrayCollection();
         $this->likes = new ArrayCollection();
     }
@@ -169,30 +167,14 @@ class Offre
         $this->captchaCode = $captchaCode;
     }
 
-    /**
-     * @return Collection|Recruteur[]
-     */
-    public function getRecruteurs(): Collection
+    public function getIdrecruteur(): ?Recruteur
     {
-        return $this->recruteurs;
+        return $this->idrecruteur;
     }
 
-    public function addRecruteur(Recruteur $recruteur): self
+    public function setIdrecruteur(?Recruteur $idrecruteur): self
     {
-        if (!$this->recruteurs->contains($recruteur)) {
-            $this->recruteurs[] = $recruteur;
-            $recruteur->addOffre($this);
-        }
-
-        return $this;
-    }
-
-    public function removeRecruteur(Recruteur $recruteur): self
-    {
-        if ($this->recruteurs->removeElement($recruteur)) {
-            $recruteur->removeOffre($this);
-        }
-
+        $this->idrecruteur = $idrecruteur;
         return $this;
     }
     public function getAbn(): ?int

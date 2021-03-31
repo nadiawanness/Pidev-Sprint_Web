@@ -27,6 +27,11 @@ class Postuler
      */
     private $recruteur;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $accepte;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -52,6 +57,18 @@ class Postuler
     public function setRecruteur(?Recruteur $recruteur): self
     {
         $this->recruteur = $recruteur;
+
+        return $this;
+    }
+
+    public function getAccepte(): ?string
+    {
+        return $this->accepte;
+    }
+
+    public function setAccepte(?string $accepte): self
+    {
+        $this->accepte = $accepte;
 
         return $this;
     }

@@ -47,4 +47,19 @@ class RecruteurRepository extends ServiceEntityRepository
         ;
     }
     */
+    public function search1($nom) {
+        return $this->createQueryBuilder('Recruteur')
+            ->andWhere('Recruteur.nom LIKE :nom')
+            ->setParameter('nom', '%'.$nom.'%')
+            ->getQuery()
+            ->getResult();
+    }
+    public function findTypeRecruteur($type) :array
+    {
+        return $this->createQueryBuilder('t')
+            ->where('t.type = :type')
+            ->setParameter('type',$type)
+            ->getQuery()
+            ->execute();
+    }
 }
